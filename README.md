@@ -51,7 +51,7 @@ Choose your preferred installation method:
 Install once and use everywhere:
 
 ```bash
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+uv tool install specify-cli --from git+https://github.com/bigsmartben/umlspec-kit.git
 ```
 
 Then use the tool directly:
@@ -72,7 +72,7 @@ specify check
 To upgrade Specify, see the [Upgrade Guide](./docs/upgrade.md) for detailed instructions. Quick upgrade:
 
 ```bash
-uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git
+uv tool install specify-cli --force --from git+https://github.com/bigsmartben/umlspec-kit.git
 ```
 
 #### Option 2: One-time Usage
@@ -80,7 +80,7 @@ uv tool install specify-cli --force --from git+https://github.com/github/spec-ki
 Run directly without installing:
 
 ```bash
-uvx --from git+https://github.com/github/spec-kit.git specify init <PROJECT_NAME>
+uvx --from git+https://github.com/bigsmartben/umlspec-kit.git specify init <PROJECT_NAME>
 ```
 
 **Benefits of persistent installation:**
@@ -258,6 +258,19 @@ Essential commands for the Spec-Driven Development workflow:
 | `/speckit.tasks`        | Generate actionable task lists for implementation                        |
 | `/speckit.implement`    | Execute all tasks to build the feature according to the plan             |
 
+#### Scenario Commands
+
+Use these when you want a more specialized, vertical template:
+
+| Command                   | Description                                                                 |
+| ------------------------- | --------------------------------------------------------------------------- |
+| `/speckit.spec.data`      | Data scenario specification (quality, lineage, backfill, interfaces)        |
+| `/speckit.plan.data`      | Data scenario plan (mode/SLA, contracts, pipeline, monitoring)              |
+| `/speckit.tasks.data`     | Data scenario tasks (contracts, quality, lineage, backfill, observability)  |
+| `/speckit.spec.refactor`  | Refactor scenario specification (goals, scope, invariants, baseline)        |
+| `/speckit.plan.refactor`  | Refactor scenario plan (target architecture, strategy, migration, perf)     |
+| `/speckit.tasks.refactor` | Refactor scenario tasks (baseline, parity checks, rollback, perf validation) |
+
 #### Optional Commands
 
 Additional commands for enhanced quality and validation:
@@ -393,7 +406,7 @@ Go to the project folder and run your AI agent. In our example, we're using `cla
 
 ![Bootstrapping Claude Code environment](./media/bootstrap-claude-code.gif)
 
-You will know that things are configured correctly if you see the `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, and `/speckit.implement` commands available.
+You will know that things are configured correctly if you see the `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, and `/speckit.implement` commands available (plus scenario commands like `/speckit.spec.data` if installed).
 
 The first step should be establishing your project's governing principles using the `/speckit.constitution` command. This helps ensure consistent decision-making throughout all subsequent development phases:
 
