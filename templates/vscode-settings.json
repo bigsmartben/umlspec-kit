@@ -8,8 +8,6 @@
         "speckit.plan.data": true,
         "speckit.plan.refactor": true,
         "speckit.tasks": true,
-        "speckit.tasks.data": true,
-        "speckit.tasks.refactor": true,
         "speckit.implement": true
     },
     "chat.tools.terminal.autoApprove": {

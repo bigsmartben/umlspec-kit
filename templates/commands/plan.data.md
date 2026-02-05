@@ -2,7 +2,7 @@
 description: Execute the implementation planning workflow for a data scenario using the data plan template.
 handoffs: 
   - label: Create Tasks
-    agent: speckit.tasks.data
+    agent: speckit.tasks
     prompt: Break the plan into tasks
     send: true
   - label: Create Checklist

@@ -109,7 +109,7 @@ specify spec refactor "Your refactor description"
 specify plan refactor && specify tasks refactor
 
 # 3. 打开并编辑
-code .specs/spec.refactor.md .plans/plan.refactor.md .tasks/tasks.refactor.md
+code .specs/spec.refactor.md .plans/plan.refactor.md .tasks/tasks.md
 ```
 
 ---

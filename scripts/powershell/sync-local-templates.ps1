@@ -27,10 +27,8 @@ Write-Host "Step 1: Verify source templates" @Warning
 $refactorTemplates = @(
     "templates/spec-template.refactor.md",
     "templates/plan-template.refactor.md",
-    "templates/tasks-template.refactor.md",
     "templates/commands/spec.refactor.md",
-    "templates/commands/plan.refactor.md",
-    "templates/commands/tasks.refactor.md"
+    "templates/commands/plan.refactor.md"
 )
 
 foreach ($template in $refactorTemplates) {
@@ -69,17 +67,15 @@ Write-Host "Step 4: Copy refactor templates" @Warning
 $templates = @(
     @{ Source = "templates/spec-template.refactor.md"; Dest = "$SpecifyHome/templates/" },
     @{ Source = "templates/plan-template.refactor.md"; Dest = "$SpecifyHome/templates/" },
-    @{ Source = "templates/tasks-template.refactor.md"; Dest = "$SpecifyHome/templates/" },
     @{ Source = "templates/commands/spec.refactor.md"; Dest = "$SpecifyHome/templates/commands/" },
-    @{ Source = "templates/commands/plan.refactor.md"; Dest = "$SpecifyHome/templates/commands/" },
-    @{ Source = "templates/commands/tasks.refactor.md"; Dest = "$SpecifyHome/templates/commands/" }
+    @{ Source = "templates/commands/plan.refactor.md"; Dest = "$SpecifyHome/templates/commands/" }
 )
 
 foreach ($file in $templates) {
     $sourcePath = Join-Path $RepoRoot $file.Source
     Copy-Item -Path $sourcePath -Destination $file.Dest -Force
 }
-Write-Host "✓ Synced 6 template files" @Success
+Write-Host "✓ Synced 4 template files" @Success
 Write-Host ""
 
 # Step 5: Show summary

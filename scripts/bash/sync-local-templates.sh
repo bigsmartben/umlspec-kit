@@ -26,10 +26,8 @@ echo -e "${YELLOW}Step 1: Verify source templates${NC}"
 REFACTOR_TEMPLATES=(
     "templates/spec-template.refactor.md"
     "templates/plan-template.refactor.md"
-    "templates/tasks-template.refactor.md"
     "templates/commands/spec.refactor.md"
     "templates/commands/plan.refactor.md"
-    "templates/commands/tasks.refactor.md"
 )
 
 for template in "${REFACTOR_TEMPLATES[@]}"; do
@@ -65,11 +63,9 @@ echo ""
 echo -e "${YELLOW}Step 4: Copy refactor templates${NC}"
 cp "$REPO_ROOT/templates/spec-template.refactor.md" "$SPECIFY_HOME/templates/"
 cp "$REPO_ROOT/templates/plan-template.refactor.md" "$SPECIFY_HOME/templates/"
-cp "$REPO_ROOT/templates/tasks-template.refactor.md" "$SPECIFY_HOME/templates/"
 cp "$REPO_ROOT/templates/commands/spec.refactor.md" "$SPECIFY_HOME/templates/commands/"
 cp "$REPO_ROOT/templates/commands/plan.refactor.md" "$SPECIFY_HOME/templates/commands/"
-cp "$REPO_ROOT/templates/commands/tasks.refactor.md" "$SPECIFY_HOME/templates/commands/"
-echo -e "${GREEN}✓ Synced 6 template files${NC}"
+echo -e "${GREEN}✓ Synced 4 template files${NC}"
 echo ""
 
 # Step 5: Show summary

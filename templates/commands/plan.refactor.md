@@ -2,7 +2,7 @@
 description: Execute the implementation planning workflow for a refactor scenario using the refactor plan template.
 handoffs: 
   - label: Create Tasks
-    agent: speckit.tasks.refactor
+    agent: speckit.tasks
     prompt: Break the plan into tasks
     send: true
   - label: Create Checklist

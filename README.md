@@ -267,10 +267,10 @@ Use these when you want a more specialized, vertical template:
 | ------------------------- | --------------------------------------------------------------------------- |
 | `/speckit.spec.data`      | Data scenario specification (quality, lineage, backfill, interfaces)        |
 | `/speckit.plan.data`      | Data scenario plan (mode/SLA, contracts, pipeline, monitoring)              |
-| `/speckit.tasks.data`     | Data scenario tasks (contracts, quality, lineage, backfill, observability)  |
 | `/speckit.spec.refactor`  | Refactor scenario specification (goals, scope, invariants, baseline)        |
 | `/speckit.plan.refactor`  | Refactor scenario plan (target architecture, strategy, migration, perf)     |
-| `/speckit.tasks.refactor` | Refactor scenario tasks (baseline, parity checks, rollback, perf validation) |
+
+**Note**: `/speckit.tasks` command is unified for all scenarios (default/data/refactor).
 
 #### Optional Commands
 
