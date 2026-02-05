@@ -230,9 +230,9 @@ With multiple developers:
 
 1. Team completes Setup + Foundational together
 2. Once Foundational is done:
-  - Developer A: Interface 1
-  - Developer B: Interface 2
-  - Developer C: Interface 3
+   - Developer A: Interface 1
+   - Developer B: Interface 2
+   - Developer C: Interface 3
    - Developer D: Algorithms
 3. Integrate and test together
 4. Divide polish and documentation tasks

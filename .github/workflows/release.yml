@@ -8,6 +8,8 @@ on:
       - 'scripts/**'
       - 'templates/**'
       - '.github/workflows/**'
+      - 'pyproject.toml'
+      - 'CHANGELOG.md'
   workflow_dispatch:
 
 jobs:

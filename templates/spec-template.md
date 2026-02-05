@@ -212,12 +212,14 @@ BE --> FE : [响应数据]
 **输出**：[输出结果]
 
 **评审点**：
+
 - [评审点1：需要明确的细节]
 - [评审点2：边界条件处理]
 - [评审点3：异常场景处理]
 
 **示例**：
-```
+
+```text
 输入：[示例输入]
 输出：[示例输出]
 ```
@@ -229,6 +231,7 @@ BE --> FE : [响应数据]
 **计算公式**：`[公式]`
 
 **特殊情况处理**：
+
 - 当[条件]时，返回[结果]
 - 当[条件]时，返回[结果]
 
@@ -293,12 +296,14 @@ table_name_1 "1" --> "0..*" table_name_2 : 关系说明
   列出所有表的主键、索引、唯一约束
 -->
 
-**table_name_1**
+##### table_name_1
+
 - PK：`id`
 - 索引：`idx_field_1(field_1)`、`idx_field_2_time(field_2, create_time)`
 - 唯一约束：`uk_field_1_field_2(field_1, field_2)`
 
-**table_name_2**
+##### table_name_2
+
 - PK：`id`
 - 索引：`idx_foreign_id(foreign_id)`
 - 外键：`fk_foreign_id` REFERENCES `table_name_1(id)`
