@@ -7,13 +7,21 @@ All notable changes to the Specify CLI and templates are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.8] - 2026-02-05
+## [0.2.0] - 2026-02-05
+
+### Added
+
+- **Unified Task System**: Merged `tasks.md`, `tasks.refactor.md`, and `tasks.data.md` into a single authoritative template.
+- **Interface Granularity Principle**: Enforced "one interface per task" rule across all task templates and plan handoffs.
+- **Technical Review Structure**: Enhanced `spec-template.md` with structured sections for architecture, data models, and UML diagrams.
+- **Architecture Sections**: Added technical context and system architecture sections to `plan-template.md`.
 
 ### Changed
 
-- Updated default repository source from github/spec-kit to bigsmartben/umlspec-kit for fork development.
+- Updated all sync scripts (bash/powershell) to reflect the simplified template structure.
+- Updated documentation and VS Code settings for the unified workflow.
 
-## [0.1.7] - 2026-02-05
+## [0.1.8] - 2026-02-05
 
 ### Fixed
 
