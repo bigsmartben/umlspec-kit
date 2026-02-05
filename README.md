@@ -345,6 +345,8 @@ If you encounter issues with an agent, please open an issue so we can refine the
 
 - **[Complete Spec-Driven Development Methodology](./spec-driven.md)** - Deep dive into the full process
 - **[Detailed Walkthrough](#-detailed-process)** - Step-by-step implementation guide
+- **[Agent Skills: Template Extension](./docs/AGENT_SKILL_SUMMARY.md)** - VS Code Copilot skill for extending refactor templates with AC-1~AC-4 framework
+- **[Refactor Template Usage Guide](./docs/TEMPLATE_USAGE_GUIDE.md)** - Complete guide for using refactor templates locally with Specify CLI
 
 ---
 
