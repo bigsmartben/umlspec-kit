@@ -80,6 +80,16 @@ Given that feature description, do this:
    - Include lineage and dependencies
    - Include backfill/replay strategy and ETL steps
    - Provide at least one PlantUML or Mermaid diagram
+   - For API/message-driven scenarios:
+     - Fill Interface Definitions section with request/response details
+     - Include sequence diagrams for key flows
+     - Include ER diagrams for data write operations
+     - Document message payload structures
+   - For database-heavy scenarios:
+     - Fill Database Schema section with table definitions
+     - Include DDL scripts for schema changes
+     - Document field sources and calculation logic
+     - Specify indexes and constraints
 5. Follow this execution flow:
 
     1. Parse user description from Input

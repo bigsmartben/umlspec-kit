@@ -57,6 +57,43 @@ flowchart LR
   B --> C[Target]
 ```
 
+## Interface Implementation *(optional - for API/message-driven scenarios)*
+
+### Query Interfaces
+
+| 接口 | 路径 | 实现组件 | 依赖服务 |
+| --- | --- | --- | --- |
+| [接口1] | `GET /api/path` | [Controller/Handler] | [数据访问层] |
+
+### Event/Message Consumers
+
+| 消费者 | Topic | 消费策略 | 幂等性设计 |
+| --- | --- | --- | --- |
+| [Consumer1] | `topic-name` | [同步/异步] | [幂等键设计] |
+
+## Database Migration Plan *(optional - for database-heavy scenarios)*
+
+### 变更执行顺序
+
+1. **DDL变更** (上线前)
+   - 新建表: [table_list]
+   - 修改表: [table_list]
+   - 新增索引: [index_list]
+
+2. **数据迁移** (上线后)
+   - 历史数据回填: [策略]
+   - 数据校验: [方法]
+
+3. **回滚方案**
+   - DDL回滚: [脚本]
+   - 数据回滚: [策略]
+
+### 索引验证清单
+
+- [ ] 查询性能测试: [关键查询的执行计划]
+- [ ] 索引覆盖率: [是否满足WHERE/JOIN条件]
+- [ ] 唯一性约束: [业务唯一键验证]
+
 ## Backfill & Replay Strategy
 
 - **Scope**: [time range, partitions]

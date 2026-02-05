@@ -34,6 +34,13 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
    - Fill Data Mode, Interfaces/Contracts, Pipeline, Quality, Lineage, Backfill, Monitoring sections
    - Include at least one PlantUML or Mermaid diagram
+   - For API/message-driven scenarios:
+     - Fill Interface Implementation section with implementation components
+     - Document consumer strategies and idempotency design
+   - For database-heavy scenarios:
+     - Fill Database Migration Plan section with execution order
+     - Include DDL change scripts and rollback plans
+     - Specify index validation checklist
    - Fill Constitution Check section from constitution
    - Evaluate gates (ERROR if violations unjustified)
    - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
