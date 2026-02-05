@@ -21,21 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.4] - 2026-02-05
 
 ### Fixed
-
 - Ensure `.github/copilot-instructions.md` is correctly copied to release packages.
 - Update agent context scripts to use the root `.github/copilot-instructions.md` path for Copilot.
 
 ## [0.1.3] - 2026-02-05
 
 ### Added
-
 - Improved GitHub Copilot support with proper `mode` metadata for Chat Mode commands.
 - Configured Copilot agent files to be stored in `.github/agents/`.
 
 ## [0.0.22] - 2025-11-07
 
 ### Added
-
 - Support for VS Code/Copilot agents, and moving away from prompts to proper agents with hand-offs.
 - Move to use `AGENTS.md` for Copilot workloads, since it's already supported out-of-the-box.
 - Adds support for the version command. ([#486](https://github.com/github/spec-kit/issues/486))
@@ -45,7 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.21] - 2025-10-21
 
 ### Added
-
 - Fixes [#975](https://github.com/github/spec-kit/issues/975) (thank you [@fgalarraga](https://github.com/fgalarraga)).
 - Adds support for Amp CLI.
 - Adds support for VS Code hand-offs and moves prompts to be full-fledged chat modes.
@@ -55,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.20] - 2025-10-14
 
 ### Added
-
 - **Intelligent Branch Naming**: `create-new-feature` scripts now support `--short-name` parameter for custom branch names
   - When `--short-name` provided: Uses the custom name directly (cleaned and formatted)
   - When omitted: Automatically generates meaningful names using stop word filtering and length-based filtering
