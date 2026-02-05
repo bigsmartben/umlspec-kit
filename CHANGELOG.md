@@ -7,6 +7,12 @@ All notable changes to the Specify CLI and templates are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - 2026-02-05
+
+### Fixed
+
+- Fixed template copying to include all variant files (data, refactor) in release packages.
+
 ## [0.1.6] - 2026-02-05
 
 ### Added
