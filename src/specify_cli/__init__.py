@@ -32,6 +32,7 @@ import tempfile
 import shutil
 import shlex
 import json
+from difflib import get_close_matches
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -226,6 +227,11 @@ AGENT_CONFIG = {
         "install_url": None,  # IDE-based
         "requires_cli": False,
     },
+}
+
+# Common user input aliases/typos mapped to canonical agent keys.
+AI_ASSISTANT_ALIASES = {
+    "colipot": "copilot",
 }
 
 SCRIPT_TYPE_CHOICES = {"sh": "POSIX Shell (bash/zsh)", "ps": "PowerShell"}
@@ -952,6 +958,7 @@ def init(
     no_git: bool = typer.Option(False, "--no-git", help="Skip git repository initialization"),
     here: bool = typer.Option(False, "--here", help="Initialize project in the current directory instead of creating a new one"),
     force: bool = typer.Option(False, "--force", help="Force merge/overwrite when using --here (skip confirmation)"),
+    local: bool = typer.Option(False, "--local", help="Use local templates and scripts instead of downloading from GitHub (for development)"),
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
     debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
     github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
@@ -1045,10 +1052,19 @@ def init(
             console.print("[yellow]Git not found - will skip repository initialization[/yellow]")
 
     if ai_assistant:
-        if ai_assistant not in AGENT_CONFIG:
-            console.print(f"[red]Error:[/red] Invalid AI assistant '{ai_assistant}'. Choose from: {', '.join(AGENT_CONFIG.keys())}")
+        ai_input = ai_assistant.strip().lower()
+        if ai_input in AI_ASSISTANT_ALIASES:
+            canonical = AI_ASSISTANT_ALIASES[ai_input]
+            console.print(f"[yellow]Note:[/yellow] Using '{canonical}' for '{ai_assistant}'.")
+            ai_input = canonical
+        if ai_input not in AGENT_CONFIG:
+            matches = get_close_matches(ai_input, AGENT_CONFIG.keys(), n=1)
+            suggestion = f" Did you mean '{matches[0]}'?" if matches else ""
+            console.print(
+                f"[red]Error:[/red] Invalid AI assistant '{ai_assistant}'. Choose from: {', '.join(AGENT_CONFIG.keys())}.{suggestion}"
+            )
             raise typer.Exit(1)
-        selected_ai = ai_assistant
+        selected_ai = ai_input
     else:
         # Create options dict for selection (agent_key: display_name)
         ai_choices = {key: config["name"] for key, config in AGENT_CONFIG.items()}
@@ -1102,22 +1118,61 @@ def init(
 
     tracker.add("precheck", "Check required tools")
     tracker.complete("precheck", "ok")
-    tracker.add("ai-select", "Select AI assistant")
-    tracker.complete("ai-select", f"{selected_ai}")
-    tracker.add("script-select", "Select script type")
-    tracker.complete("script-select", selected_script)
-    for key, label in [
-        ("fetch", "Fetch latest release"),
-        ("download", "Download template"),
-        ("extract", "Extract template"),
-        ("zip-list", "Archive contents"),
-        ("extracted-summary", "Extraction summary"),
-        ("chmod", "Ensure scripts executable"),
-        ("cleanup", "Cleanup"),
-        ("git", "Initialize git repository"),
-        ("final", "Finalize")
-    ]:
-        tracker.add(key, label)
+
+    if local:
+        tracker.add("local-copy", "Copying local templates")
+        try:
+            repo_root = Path(__file__).parent.parent.parent
+            spec_dir = project_path / ".specify"
+            spec_dir.mkdir(parents=True, exist_ok=True)
+
+            # Copy directories
+            for d in ["memory", "templates", "scripts"]:
+                src_d = repo_root / d
+                if src_d.exists():
+                    dst_d = spec_dir / d
+                    if dst_d.exists():
+                        shutil.rmtree(dst_d)
+                    shutil.copytree(src_d, dst_d)
+            
+            # Generate agent commands if agent-specific folder is needed
+            agent_config = AGENT_CONFIG.get(selected_ai)
+            if agent_config:
+                agent_folder = project_path / agent_config["folder"].lstrip("/")
+                agent_folder.mkdir(parents=True, exist_ok=True)
+                
+                # Mock the command generation for local testing
+                # For now, we just copy the command templates
+                commands_src = repo_root / "templates" / "commands"
+                if commands_src.exists():
+                    for cmd_file in commands_src.glob("*.md"):
+                        # Basic copy, not full generation like the release script, 
+                        # but enough to see the files exist
+                        shutil.copy(cmd_file, agent_folder / f"speckit.{cmd_file.name}")
+
+            tracker.complete("local-copy", "done")
+        except Exception as e:
+            tracker.error("local-copy", str(e))
+            raise typer.Exit(1)
+    else:
+        tracker.add("ai-select", "Select AI assistant")
+        tracker.complete("ai-select", f"{selected_ai}")
+        tracker.add("script-select", "Select script type")
+        tracker.complete("script-select", selected_script)
+        for key, label in [
+            ("fetch", "Fetch latest release"),
+            ("download", "Download template"),
+            ("extract", "Extract template"),
+            ("zip-list", "Archive contents"),
+            ("extracted-summary", "Extraction summary"),
+            ("chmod", "Ensure scripts executable"),
+            ("cleanup", "Cleanup"),
+            ("git", "Initialize git repository"),
+            ("final", "Finalize")
+        ]:
+            if local and key in ["fetch", "download", "extract", "zip-list", "extracted-summary"]:
+                continue
+            tracker.add(key, label)
 
     # Track git error message outside Live context so it persists
     git_error_message = None
@@ -1129,7 +1184,8 @@ def init(
             local_ssl_context = ssl_context if verify else False
             local_client = httpx.Client(verify=local_ssl_context)
 
-            download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
+            if not local:
+                download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
 
             ensure_executable_scripts(project_path, tracker=tracker)
 
