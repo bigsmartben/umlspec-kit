@@ -10,12 +10,12 @@ description: "Task list template for feature implementation"
 
 **Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+**Organization**: Tasks are grouped by functional module or user story to enable independent implementation and testing.
 
-## Format: `[ID] [P?] [Story] Description`
+## Format: `[ID] [P?] [Module] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- **[Module]**: Which module/story this task belongs to (e.g., DB, API, US1, US2)
 - Include exact file paths in descriptions
 
 ## Path Conventions
@@ -30,15 +30,14 @@ description: "Task list template for feature implementation"
   IMPORTANT: The tasks below are SAMPLE TASKS for illustration purposes only.
   
   The /speckit.tasks command MUST replace these with actual tasks based on:
-  - User stories from spec.md (with their priorities P1, P2, P3...)
+  - Functional requirements from spec.md
   - Feature requirements from plan.md
   - Entities from data-model.md
   - Endpoints from contracts/
+  - Interface mappings from spec section 1 (功能点完备性覆盖)
   
-  Tasks MUST be organized by user story so each story can be:
-  - Implemented independently
-  - Tested independently
-  - Delivered as an MVP increment
+  Tasks should be organized by logical modules (Database, Service, API, etc.)
+  or by user stories for clear dependency management.
   
   DO NOT keep these sample tasks in the generated tasks.md file.
   ============================================================================
@@ -56,106 +55,172 @@ description: "Task list template for feature implementation"
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+**Purpose**: Core infrastructure that MUST be complete before ANY feature implementation can begin
 
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete
+**⚠️ CRITICAL**: No feature work can begin until this phase is complete
 
-Examples of foundational tasks (adjust based on your project):
+### Database Layer
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T004 [P] [DB] Design and create database schema based on data-model.md
+- [ ] T005 [P] [DB] Create database migration scripts
+- [ ] T006 [P] [DB] Setup database indexes and constraints per spec section 6.3.1
+- [ ] T007 [P] [DB] Create test data fixtures
 
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+### Service Layer Foundation
 
----
+- [ ] T008 [P] [Service] Implement base service classes and interfaces
+- [ ] T009 [P] [Service] Setup dependency injection framework
+- [ ] T010 [P] [Service] Implement error handling and logging infrastructure
+- [ ] T011 [P] [Service] Setup configuration management
 
-## Phase 3: User Story 1 - [Title] (Priority: P1) 🎯 MVP
+### API Layer Foundation
 
-**Goal**: [Brief description of what this story delivers]
+- [ ] T012 [P] [API] Setup API routing framework
+- [ ] T013 [P] [API] Implement authentication/authorization middleware
+- [ ] T014 [P] [API] Implement request validation framework
+- [ ] T015 [P] [API] Setup API response wrapper (e.g., ApiResponse)
+- [ ] T016 [P] [API] Implement global exception handler
 
-**Independent Test**: [How to verify this story works on its own]
-
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
-
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
-
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
-
-### Implementation for User Story 1
-
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
-
-**Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
+**Checkpoint**: Foundation ready - feature implementation can now begin
 
 ---
 
-## Phase 4: User Story 2 - [Title] (Priority: P2)
+## Phase 3: Feature Implementation
 
-**Goal**: [Brief description of what this story delivers]
+**Purpose**: Implement core business features based on spec.md section 0.1 and section 1.1
 
-**Independent Test**: [How to verify this story works on its own]
+### Module 1: [功能点1 - Feature Name]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+**Interface**: `[GET/POST] /api/path` (Reference: spec.md section 1.1, 3.1)
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T017 [P] [M1] Implement [Entity] model in src/models/[entity].java
+- [ ] T018 [M1] Implement [Service] business logic in src/services/[service].java
+- [ ] T019 [M1] Implement API controller in src/controllers/[controller].java
+- [ ] T020 [M1] Add input validation and error handling
+- [ ] T021 [M1] Implement time sequence logic per spec section 2.1
 
-### Implementation for User Story 2
+### Module 2: [功能点2 - Feature Name]
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+**Interface**: `[GET/POST] /api/path` (Reference: spec.md section 1.1, 3.1)
 
-**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
+- [ ] T022 [P] [M2] Implement [Entity] model in src/models/[entity].java
+- [ ] T023 [M2] Implement [Service] business logic in src/services/[service].java
+- [ ] T024 [M2] Implement API controller in src/controllers/[controller].java
+- [ ] T025 [M2] Implement state transition logic per spec section 0.4
+- [ ] T026 [M2] Add idempotency handling per spec section 6.2
 
----
+### Module 3: [功能点3 - Feature Name]
 
-## Phase 5: User Story 3 - [Title] (Priority: P3)
+**Interface**: `[GET/POST] /api/path` (Reference: spec.md section 1.1, 3.1)
 
-**Goal**: [Brief description of what this story delivers]
+- [ ] T027 [P] [M3] Implement [Entity] model in src/models/[entity].java
+- [ ] T028 [M3] Implement [Service] business logic in src/services/[service].java
+- [ ] T029 [M3] Implement API controller in src/controllers/[controller].java
+- [ ] T030 [M3] Implement core algorithm per spec section 5.1
 
-**Independent Test**: [How to verify this story works on its own]
-
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
-
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
-
-### Implementation for User Story 3
-
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
-
-**Checkpoint**: All user stories should now be independently functional
+**Checkpoint**: Core features implemented
 
 ---
 
-[Add more user story phases as needed, following the same pattern]
+## Phase 4: Algorithm Implementation
+
+**Purpose**: Implement core algorithms and business rules (Reference: spec.md section 5)
+
+### Algorithm A: [算法名称1]
+
+- [ ] T031 [Algo] Implement [Algorithm A] in src/algorithms/[algo].java
+- [ ] T032 [Algo] Add edge case handling per spec section 5.1(A)
+- [ ] T033 [Algo] Add algorithm unit tests
+
+### Algorithm B: [算法名称2]
+
+- [ ] T034 [Algo] Implement [Algorithm B] in src/algorithms/[algo].java
+- [ ] T035 [Algo] Add calculation formula per spec section 5.1(B)
+- [ ] T036 [Algo] Handle special cases (e.g., division by zero)
+
+**Checkpoint**: All algorithms implemented and tested
 
 ---
 
-## Phase N: Polish & Cross-Cutting Concerns
+## Phase 5: External Integration
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Integrate with external services (Reference: spec.md section 4)
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
-- [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
-- [ ] TXXX Security hardening
-- [ ] TXXX Run quickstart.md validation
+### External Service 1: [服务名称]
+
+- [ ] T037 [P] [Ext] Implement [Service] client in src/clients/[client].java
+- [ ] T038 [Ext] Add retry and circuit breaker logic
+- [ ] T039 [Ext] Add integration logging and monitoring
+
+### External Service 2: [服务名称]
+
+- [ ] T040 [P] [Ext] Implement [Service] client in src/clients/[client].java
+- [ ] T041 [Ext] Handle external service failures gracefully
+- [ ] T042 [Ext] Add fallback mechanism
+
+**Checkpoint**: All external integrations complete
+
+---
+
+## Phase 6: Testing & Quality Assurance (OPTIONAL - only if tests requested)
+
+**Purpose**: Comprehensive testing coverage
+
+### Contract Tests
+
+- [ ] T043 [P] [Test] Contract test for [Interface 1] in tests/contract/test_[name].java
+- [ ] T044 [P] [Test] Contract test for [Interface 2] in tests/contract/test_[name].java
+- [ ] T045 [P] [Test] Verify API contracts match spec.md section 3
+
+### Integration Tests
+
+- [ ] T046 [P] [Test] Integration test for [Flow 1] in tests/integration/test_[name].java
+- [ ] T047 [P] [Test] Integration test for [Flow 2] in tests/integration/test_[name].java
+- [ ] T048 [Test] End-to-end flow test per spec section 0.3
+
+### Unit Tests
+
+- [ ] T049 [P] [Test] Unit tests for models in tests/unit/models/
+- [ ] T050 [P] [Test] Unit tests for services in tests/unit/services/
+- [ ] T051 [P] [Test] Unit tests for algorithms in tests/unit/algorithms/
+
+### Performance & Load Tests
+
+- [ ] T052 [Test] Performance test - verify RT < [threshold] per spec section 8.1
+- [ ] T053 [Test] Load test - verify concurrent user capacity per spec section 8.1
+- [ ] T054 [Test] Stress test - verify system stability under high load
+
+**Checkpoint**: All tests pass, quality metrics met
+
+---
+
+## Phase 7: Polish & Documentation
+
+**Purpose**: Code quality, documentation, and deployment readiness
+
+### Code Quality
+
+- [ ] T055 [P] Code review and refactoring
+- [ ] T056 [P] Performance optimization
+- [ ] T057 [P] Security hardening
+- [ ] T058 [P] Error message standardization
+
+### Documentation
+
+- [ ] T059 [P] API documentation (Swagger/OpenAPI)
+- [ ] T060 [P] Database schema documentation
+- [ ] T061 [P] Architecture documentation
+- [ ] T062 [P] Deployment guide
+- [ ] T063 Run quickstart.md validation
+
+### Monitoring & Observability
+
+- [ ] T064 [P] Add application metrics
+- [ ] T065 [P] Add business metrics per spec section 0.2
+- [ ] T066 [P] Setup alerting rules
+- [ ] T067 [P] Add distributed tracing
+
+**Checkpoint**: Feature complete and production-ready
 
 ---
 
@@ -164,68 +229,41 @@ Examples of foundational tasks (adjust based on your project):
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
-- **Polish (Final Phase)**: Depends on all desired user stories being complete
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all feature work
+- **Feature Implementation (Phase 3)**: Depends on Foundational phase completion
+- **Algorithm Implementation (Phase 4)**: Can run in parallel with Phase 3
+- **External Integration (Phase 5)**: Depends on Phase 3 completion
+- **Testing (Phase 6)**: Depends on Phases 3-5 completion
+- **Polish (Phase 7)**: Depends on all previous phases
 
-### User Story Dependencies
+### Module Dependencies
 
-- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
-- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
-
-### Within Each User Story
-
-- Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
-- Core implementation before integration
-- Story complete before moving to next priority
+- **Module 1**: Can start after Foundational (Phase 2)
+- **Module 2**: Can start after Foundational (Phase 2) - May depend on Module 1
+- **Module 3**: Can start after Foundational (Phase 2) - May depend on Module 1 and 2
 
 ### Parallel Opportunities
 
 - All Setup tasks marked [P] can run in parallel
 - All Foundational tasks marked [P] can run in parallel (within Phase 2)
-- Once Foundational phase completes, all user stories can start in parallel (if team capacity allows)
-- All tests for a user story marked [P] can run in parallel
-- Models within a story marked [P] can run in parallel
-- Different user stories can be worked on in parallel by different team members
-
----
-
-## Parallel Example: User Story 1
-
-```bash
-# Launch all tests for User Story 1 together (if tests requested):
-Task: "Contract test for [endpoint] in tests/contract/test_[name].py"
-Task: "Integration test for [user journey] in tests/integration/test_[name].py"
-
-# Launch all models for User Story 1 together:
-Task: "Create [Entity1] model in src/models/[entity1].py"
-Task: "Create [Entity2] model in src/models/[entity2].py"
-```
+- Database, Service, and API layer tasks within Foundation can run in parallel
+- Different modules in Phase 3 can be developed in parallel (if no dependencies)
+- All test tasks marked [P] can run in parallel
+- All documentation tasks can run in parallel
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 Only)
+### Sequential Approach
 
 1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
-3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Test User Story 1 independently
-5. Deploy/demo if ready
-
-### Incremental Delivery
-
-1. Complete Setup + Foundational → Foundation ready
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
-3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 3 → Test independently → Deploy/Demo
-5. Each story adds value without breaking previous stories
+2. Complete Phase 2: Foundational (CRITICAL - blocks all features)
+3. Implement Module 1 → Implement Module 2 → Implement Module 3
+4. Implement algorithms (Phase 4)
+5. Integrate external services (Phase 5)
+6. Run comprehensive tests (Phase 6)
+7. Polish and document (Phase 7)
 
 ### Parallel Team Strategy
 
@@ -233,19 +271,31 @@ With multiple developers:
 
 1. Team completes Setup + Foundational together
 2. Once Foundational is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
-3. Stories complete and integrate independently
+   - Developer A: Module 1
+   - Developer B: Module 2
+   - Developer C: Module 3
+   - Developer D: Algorithms
+3. Integrate and test together
+4. Divide polish and documentation tasks
+
+### Incremental Delivery
+
+1. Complete Setup + Foundational → Foundation ready
+2. Add Module 1 → Test → Deploy (MVP!)
+3. Add Module 2 → Test → Deploy
+4. Add Module 3 → Test → Deploy
+5. Add remaining features → Final testing → Production release
 
 ---
 
 ## Notes
 
-- [P] tasks = different files, no dependencies
-- [Story] label maps task to specific user story for traceability
-- Each user story should be independently completable and testable
-- Verify tests fail before implementing
+- [P] tasks = different files, no dependencies, can run in parallel
+- [Module] label maps task to specific module/feature for traceability
+- Reference spec.md section numbers in task descriptions for clarity
+- Verify database constraints match spec section 6.3.1
+- Ensure API contracts match spec section 3.1
+- Validate algorithms against spec section 5.1
+- Verify success criteria from spec section 8
 - Commit after each task or logical group
-- Stop at any checkpoint to validate story independently
-- Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+- Avoid: vague tasks, same file conflicts, circular dependencies
