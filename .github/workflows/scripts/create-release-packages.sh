@@ -182,6 +182,12 @@ build_variant() {
     copilot)
       mkdir -p "$base_dir/.github/agents"
       generate_commands copilot agent.md "\$ARGUMENTS" "$base_dir/.github/agents" "$script"
+
+      # Copy the Copilot system instructions to the root .github folder for auto-detection
+      if [[ -f ".github/agents/copilot-instructions.md" ]]; then
+        cp ".github/agents/copilot-instructions.md" "$base_dir/.github/copilot-instructions.md"
+      fi
+
       # Generate companion prompt files
       generate_copilot_prompts "$base_dir/.github/agents" "$base_dir/.github/prompts"
       # Create VS Code workspace settings
