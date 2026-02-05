@@ -35,20 +35,33 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Load plan.md and extract tech stack, libraries, project structure
    - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
    - If data-model.md exists: Extract entities and map to user stories
-   - If contracts/ exists: Map endpoints to user stories
+   - If contracts/ exists: Extract end-to-end interfaces (HTTP/WebSocket/socket) and map them to user stories
    - If research.md exists: Extract decisions for setup tasks
-   - Generate tasks organized by user story (see Task Generation Rules below)
-   - Generate dependency graph showing user story completion order
-   - Create parallel execution examples per user story
-   - Validate task completeness (each user story has all needed tasks, independently testable)
+   - Treat plan.md **Interface Inventory** as the source of truth for interfaces, invariants, and verification
+   - Generate tasks organized by interface granularity (see Task Generation Rules below)
+   - Generate dependency graph showing interface delivery order
+   - Create parallel execution examples only for cross-interface or cross-cutting tasks
+   - Validate task completeness (each interface task is independently verifiable)
 
 4. **Generate tasks.md**: Use `templates/tasks-template.refactor.md` as structure, fill with:
    - Correct feature name from plan.md
    - Phase 1: Setup tasks (project initialization)
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
-   - Include baseline capture, rollback, and parity validation tasks
-   - Phase 3+: One phase per user story (in priority order from spec.md)
-   - Each phase includes: story goal, independent test criteria, tests (if requested), implementation tasks
+   - Include baseline capture, impact-map, migration+rollback, and parity validation tasks
+   - Phase 3+: One phase per interface (HTTP/WebSocket/socket), in priority order derived from user story priority
+   - Each interface phase includes: goal and exactly one end-to-end delivery task
+   - To avoid redundancy, reference plan.md Interface Inventory for invariants/contract/verification details
+
+5. **Hard consistency validation (MUST PASS)**:
+
+After generating tasks.md, validate:
+
+- Extract the set of interface IDs from plan.md Interface Inventory: `I01`, `I02`, ...
+- Extract the set of interface IDs from tasks.md by scanning for tokens `Interface:Ixx`
+- Rules:
+   - Every plan interface ID MUST appear in tasks exactly once
+   - No tasks interface IDs may exist that are not in plan
+   - If any rule fails: ERROR and fix tasks.md
    - Final Phase: Polish & cross-cutting concerns
    - All tasks must follow the strict checklist format (see Task Generation Rules below)
    - Clear file paths for each task
@@ -58,10 +71,10 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 5. **Report**: Output path to generated tasks.md and summary:
    - Total task count
-   - Task count per user story
+   - Task count per interface
    - Parallel opportunities identified
-   - Independent test criteria for each story
-   - Suggested MVP scope (typically just User Story 1)
+   - Independent verification summary for each interface
+   - Suggested MVP scope (typically just the first highest-priority interface)
    - Format validation: Confirm ALL tasks follow the checklist format (checkbox, ID, labels, file paths)
 
 Context for task generation: {ARGS}
@@ -70,7 +83,15 @@ The tasks.md should be immediately executable - each task must be specific enoug
 
 ## Task Generation Rules
 
-**CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.
+**CRITICAL**: Tasks MUST be organized by **interface granularity** to enable independent delivery and verification.
+
+**Interface Granularity Rule (REQUIRED)**:
+
+- For every in-scope interface (**end-to-end HTTP/WebSocket/socket only**), generate **exactly one** end-to-end delivery task.
+- Do NOT create interface-granularity tasks for: internal RPC, MQ consumers/producers, scheduled jobs/cron.
+- Do NOT split a single interface into separate tasks like "model", "service", "controller".
+- Put all necessary internal refactor work required to deliver that interface inside the interface task description.
+- The interface task MUST include explicit verification steps (parity/contract check, and tests if requested).
 
 **Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
 
@@ -108,34 +129,29 @@ Every task MUST strictly follow this format:
 
 ### Task Organization
 
-1. **From User Stories (spec.md)** - PRIMARY ORGANIZATION:
-   - Each user story (P1, P2, P3...) gets its own phase
-   - Map all related components to their story:
-     - Models needed for that story
-     - Services needed for that story
-     - Endpoints/UI needed for that story
-     - If tests requested: Tests specific to that story
-   - Mark story dependencies (most stories should be independent)
+1. **From Interfaces (contracts/ + spec.md)** - PRIMARY ORGANIZATION:
+   - Build an Interface Inventory first (method/path/name, contract file if present, owning module, mapped user story)
+   - Each interface gets its own phase block
+   - Use user story priority only to order interface phases
 
 2. **From Contracts**:
-   - Map each contract/endpoint → to the user story it serves
-   - If tests requested: Each contract → contract test task [P] before implementation in that story's phase
+   - Use contracts as the source of truth for interface definition when available
+   - Keep contract compatibility unless explicitly allowed to change
 
 3. **From Data Model**:
-   - Map each entity to the user story(ies) that need it
-   - If entity serves multiple stories: Put in earliest story or Setup phase
-   - Relationships → service layer tasks in appropriate story phase
+   - Entities are supporting details; do not create separate tasks per entity unless they are cross-interface foundational work
+   - Prefer capturing entity work inside the interface task that needs it
 
 4. **From Setup/Infrastructure**:
    - Shared infrastructure → Setup phase (Phase 1)
    - Foundational/blocking tasks → Foundational phase (Phase 2)
-   - Story-specific setup → within that story's phase
+   - Interface-specific setup → within that interface's phase
 
 ### Phase Structure
 
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
-- **Phase 3+**: User Stories in priority order (P1, P2, P3...)
-  - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
-  - Each phase should be a complete, independently testable increment
+- **Phase 3+**: Interfaces in priority order (derived from user story priority)
+   - Each phase contains exactly one end-to-end delivery task for that interface
+   - Each phase should be a complete, independently verifiable increment
 - **Final Phase**: Polish & Cross-Cutting Concerns

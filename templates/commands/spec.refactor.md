@@ -75,9 +75,10 @@ Given that feature description, do this:
 
 4. **Refactor scenario requirements**:
    - State refactor goals, non-goals, and constraints
-   - Capture current behavior baseline and invariants
+   - Capture current behavior baseline, invariants, and baseline artifacts
    - Define scope and impact across interfaces, sequences, and classes
-   - Define refactor strategy and performance targets
+   - Define refactor strategy (phases + validation checkpoints) and performance targets
+   - Include risks, rollback, and rollout plan
    - Provide at least one PlantUML or Mermaid diagram (sequence/class/component as relevant)
 5. Follow this execution flow:
 

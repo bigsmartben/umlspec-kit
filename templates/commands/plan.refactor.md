@@ -32,6 +32,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
+   - Fill Baseline & Parity Plan (baseline artifacts + parity definition)
+   - Fill Impact Map (evidence-backed scope/impact)
+   - Build Interface Inventory by copying Interface IDs from spec.md (do not renumber)
    - Fill Target Architecture, Scope Impact, Refactor Strategy, Migration, Performance sections
    - Include at least one PlantUML or Mermaid diagram
    - Fill Constitution Check section from constitution
@@ -95,3 +98,4 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 - Use absolute paths
 - ERROR on gate failures or unresolved clarifications
+- Prefer deterministic scope evidence (index/usages/contracts/tests)
