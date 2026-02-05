@@ -5,6 +5,7 @@ param(
     [switch]$Json,
     [string]$ShortName,
     [int]$Number = 0,
+    [string]$Template,
     [switch]$Help,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$FeatureDescription
@@ -13,17 +14,19 @@ $ErrorActionPreference = 'Stop'
 
 # Show help if requested
 if ($Help) {
-    Write-Host "Usage: ./create-new-feature.ps1 [-Json] [-ShortName <name>] [-Number N] <feature description>"
+    Write-Host "Usage: ./create-new-feature.ps1 [-Json] [-ShortName <name>] [-Number N] [-Template <type>] <feature description>"
     Write-Host ""
     Write-Host "Options:"
     Write-Host "  -Json               Output in JSON format"
     Write-Host "  -ShortName <name>   Provide a custom short name (2-4 words) for the branch"
     Write-Host "  -Number N           Specify branch number manually (overrides auto-detection)"
+    Write-Host "  -Template <type>    Specify template type (e.g., knowledge-publish, data, refactor)"
     Write-Host "  -Help               Show this help message"
     Write-Host ""
     Write-Host "Examples:"
     Write-Host "  ./create-new-feature.ps1 'Add user authentication system' -ShortName 'user-auth'"
     Write-Host "  ./create-new-feature.ps1 'Implement OAuth2 integration for API'"
+    Write-Host "  ./create-new-feature.ps1 '添加竖式排版支持' -Template knowledge-publish"
     exit 0
 }
 
@@ -254,10 +257,20 @@ if ($hasGit) {
 $featureDir = Join-Path $specsDir $branchName
 New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
-$template = Join-Path $repoRoot '.specify/templates/spec-template.md'
+# Determine template file
+if ($Template) {
+    $templatePath = Join-Path $repoRoot "templates/spec-template.$Template.md"
+    if (-not (Test-Path $templatePath)) {
+        Write-Warning "[specify] Warning: Template '$templatePath' not found, falling back to default"
+        $templatePath = Join-Path $repoRoot 'templates/spec-template.md'
+    }
+} else {
+    $templatePath = Join-Path $repoRoot 'templates/spec-template.md'
+}
+
 $specFile = Join-Path $featureDir 'spec.md'
-if (Test-Path $template) { 
-    Copy-Item $template $specFile -Force 
+if (Test-Path $templatePath) { 
+    Copy-Item $templatePath $specFile -Force 
 } else { 
     New-Item -ItemType File -Path $specFile | Out-Null 
 }

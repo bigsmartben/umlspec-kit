@@ -5,6 +5,7 @@ set -e
 JSON_MODE=false
 SHORT_NAME=""
 BRANCH_NUMBER=""
+TEMPLATE_NAME=""
 ARGS=()
 i=1
 while [ $i -le $# ]; do
@@ -40,18 +41,33 @@ while [ $i -le $# ]; do
             fi
             BRANCH_NUMBER="$next_arg"
             ;;
+        --template)
+            if [ $((i + 1)) -gt $# ]; then
+                echo 'Error: --template requires a value' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --template requires a value' >&2
+                exit 1
+            fi
+            TEMPLATE_NAME="$next_arg"
+            ;;
         --help|-h) 
-            echo "Usage: $0 [--json] [--short-name <name>] [--number N] <feature_description>"
+            echo "Usage: $0 [--json] [--short-name <name>] [--number N] [--template <type>] <feature_description>"
             echo ""
             echo "Options:"
             echo "  --json              Output in JSON format"
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
             echo "  --number N          Specify branch number manually (overrides auto-detection)"
+            echo "  --template <type>   Specify template type (e.g., knowledge-publish, data, refactor)"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
             echo "  $0 'Add user authentication system' --short-name 'user-auth'"
             echo "  $0 'Implement OAuth2 integration for API' --number 5"
+            echo "  $0 '添加竖式排版支持' --template knowledge-publish"
             exit 0
             ;;
         *) 
@@ -280,9 +296,23 @@ fi
 FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
 mkdir -p "$FEATURE_DIR"
 
-TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
+# Determine template file
+if [ -n "$TEMPLATE_NAME" ]; then
+    TEMPLATE="$REPO_ROOT/templates/spec-template.$TEMPLATE_NAME.md"
+    if [ ! -f "$TEMPLATE" ]; then
+        >&2 echo "[specify] Warning: Template '$TEMPLATE' not found, falling back to default"
+        TEMPLATE="$REPO_ROOT/templates/spec-template.md"
+    fi
+else
+    TEMPLATE="$REPO_ROOT/templates/spec-template.md"
+fi
+
 SPEC_FILE="$FEATURE_DIR/spec.md"
-if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
+if [ -f "$TEMPLATE" ]; then 
+    cp "$TEMPLATE" "$SPEC_FILE"
+else 
+    touch "$SPEC_FILE"
+fi
 
 # Set the SPECIFY_FEATURE environment variable for the current session
 export SPECIFY_FEATURE="$BRANCH_NAME"
