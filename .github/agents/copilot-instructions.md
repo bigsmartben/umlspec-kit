@@ -1,0 +1,6 @@
+# GitHub Copilot Instructions
+
+...existing code...
+- Always respond to the user in Chinese (Simplified).
+- 始终使用中文（简体）回复用户。
+...existing code...

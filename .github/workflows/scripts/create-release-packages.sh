@@ -85,6 +85,20 @@ generate_commands() {
       in_frontmatter && skip_scripts && /^[[:space:]]/ { next }
       { print }
     ')
+
+    # Add mode: speckit.<name> for copilot
+    if [[ "$agent" == "copilot" && "$ext" == "agent.md" ]]; then
+      body=$(printf '%s\n' "$body" | awk -v name="$name" '
+        /^---$/ { 
+          print; 
+          if (++dash_count == 1) {
+            printf "mode: speckit.%s\n", name;
+          }
+          next 
+        }
+        { print }
+      ')
+    fi
     
     # Apply other substitutions
     body=$(printf '%s\n' "$body" | sed "s/{ARGS}/$arg_format/g" | sed "s/__AGENT__/$agent/g" | rewrite_paths)
