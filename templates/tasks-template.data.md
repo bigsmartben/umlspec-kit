@@ -77,4 +77,3 @@ description: "Task list template for data feature implementation"
 
 - Setup -> Foundational -> User Stories -> Quality/Backfill -> Observability/Docs
 - Data contracts and quality rules must be in place before publishing outputs
-

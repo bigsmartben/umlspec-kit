@@ -74,4 +74,3 @@ description: "Task list template for refactor feature implementation"
 
 - Baseline -> Foundations -> User Stories -> Migration/Cleanup -> Performance/Stability
 - Each refactor step must pass regression checks before proceeding
-
