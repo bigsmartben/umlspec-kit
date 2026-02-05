@@ -126,7 +126,7 @@ def _format_rate_limit_error(status_code: int, headers: httpx.Headers, url: str)
 AGENT_CONFIG = {
     "copilot": {
         "name": "GitHub Copilot",
-        "folder": ".github/",
+        "folder": ".github/agents/",
         "install_url": None,  # IDE-based, no CLI check needed
         "requires_cli": False,
     },
@@ -242,6 +242,7 @@ BANNER = """
 """
 
 TAGLINE = "GitHub Spec Kit - Spec-Driven Development Toolkit"
+
 class StepTracker:
     """Track and render hierarchical steps without emojis, similar to Claude Code tree output.
     Supports live auto-refresh via an attached refresh callback.
@@ -1091,6 +1092,10 @@ def init(
     console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
     console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
 
+    if selected_ai == "copilot":
+        console.print("[yellow]Safety Tip:[/yellow] GitHub Copilot works best when agent files are in .github/agents/")
+        console.print("[yellow]Note:[/yellow] Ensure your .gitignore does not ignore the .github/ folder.")
+
     tracker = StepTracker("Initialize Specify Project")
 
     sys._specify_tracker_active = True
@@ -1366,4 +1371,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
