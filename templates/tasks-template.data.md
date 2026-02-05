@@ -3,77 +3,46 @@
 description: "Task list template for data feature implementation"
 ---
 
-# Tasks: [FEATURE NAME] (Data)
+# ⚠️ TEMPLATE MERGED - USE tasks-template.md
 
-**Input**: Design documents from `/specs/[###-feature-name]/`
-**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+**This file is now a pointer to the unified template.**
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Data** 场景的任务拆分已统一到 `templates/tasks-template.md`。
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+本文件保留仅为兼容性，实际内容请参考：[templates/tasks-template.md](tasks-template.md)
 
-## Format: `[ID] [P?] [Story] Description`
+## Data-Specific Notes
 
-- **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
-- Include exact file paths in descriptions
+生成 data tasks 时，请额外关注：
 
-## Data-Specific Guidance
+### Foundational Phase (Phase 2)
 
-- Include tasks for data contracts, lineage, data quality rules, and backfill/replay.
-- Capture both real-time and batch paths if hybrid.
-- Add monitoring/alerting tasks tied to data freshness and quality metrics.
+确保包含数据专有基础设施：
 
-## Phase 1: Setup (Shared Infrastructure)
+- [ ] Define input/output data contracts in specs/contracts/
+- [ ] Create base schemas or models in src/models/
+- [ ] Implement data quality rules framework in src/quality/
+- [ ] Document lineage in docs/lineage.md (include diagram)
+- [ ] Setup monitoring and alerting for freshness and quality
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize data pipeline framework and config
-- [ ] T003 [P] Configure linting, formatting, and data validation tooling
+### Interface Label Format
 
----
+对于数据场景，接口标识可以是：
+- `[dataset:foo_v1]` - 数据契约/数据集
+- `[GET/POST /api/path]` - 数据 API 端点
+- `[stream:topic_name]` - 流式数据接口
 
-## Phase 2: Foundational (Blocking Prerequisites)
+### Interface Task Requirements
 
-- [ ] T004 Define input/output data contracts in specs/contracts/
-- [ ] T005 [P] Create base schemas or models in src/models/
-- [ ] T006 [P] Implement data quality rules in src/quality/
-- [ ] T007 Document lineage in docs/lineage.md (include diagram)
-- [ ] T008 Setup monitoring and alerting for freshness and quality
+每个数据接口任务必须端到端完成：
+- Ingestion（数据摄取）
+- Transform（数据转换）
+- Publish（数据发布）
+- Quality checks（质量校验）
+- Backfill workflow（回灌流程）
+- Monitoring/alerting（监控告警）
 
----
+### Dependencies
 
-## Phase 3: User Story 1 - [Title] (Priority: P1)
-
-**Goal**: [Brief description of what this story delivers]
-
-**Independent Test**: [How to verify this story works on its own]
-
-### Implementation for User Story 1
-
-- [ ] T009 [P] [US1] Implement ingestion for [source] in src/ingest/
-- [ ] T010 [P] [US1] Implement transform for [dataset] in src/transform/
-- [ ] T011 [US1] Publish outputs to [target] in src/publish/
-- [ ] T012 [US1] Add data quality checks for [dataset]
-
----
-
-## Phase 4: Data Quality & Backfill
-
-- [ ] T013 [P] Implement backfill workflow in src/backfill/
-- [ ] T014 [P] Add reconciliation/validation for backfill results
-- [ ] T015 Add runbooks for failure recovery in docs/runbooks/
-
----
-
-## Phase 5: Observability & Documentation
-
-- [ ] T016 [P] Add dashboards for freshness and quality metrics
-- [ ] T017 Document interfaces and lineage in docs/
-- [ ] T018 Run quickstart.md validation
-
----
-
-## Dependencies & Execution Order
-
-- Setup -> Foundational -> User Stories -> Quality/Backfill -> Observability/Docs
 - Data contracts and quality rules must be in place before publishing outputs
+- Lineage documentation must be updated when adding new interfaces

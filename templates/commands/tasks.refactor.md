@@ -46,7 +46,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 4. **Generate tasks.md**: Use `templates/tasks-template.refactor.md` as structure, fill with:
    - Correct feature name from plan.md
    - Phase 1: Setup tasks (project initialization)
-   - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
+   - Phase 2: Foundational tasks (blocking prerequisites for all interfaces)
    - Include baseline capture, impact-map, migration+rollback, and parity validation tasks
    - Phase 3+: One phase per interface (HTTP/WebSocket/socket), in priority order derived from user story priority
    - Each interface phase includes: goal and exactly one end-to-end delivery task
@@ -100,7 +100,7 @@ The tasks.md should be immediately executable - each task must be specific enoug
 Every task MUST strictly follow this format:
 
 ```text
-- [ ] [TaskID] [P?] [Story?] Description with file path
+- [ ] [TaskID] [P?] [Interface?] Description with file path
 ```
 
 **Format Components**:
@@ -108,24 +108,24 @@ Every task MUST strictly follow this format:
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
 2. **Task ID**: Sequential number (T001, T002, T003...) in execution order
 3. **[P] marker**: Include ONLY if task is parallelizable (different files, no dependencies on incomplete tasks)
-4. **[Story] label**: REQUIRED for user story phase tasks only
-   - Format: [US1], [US2], [US3], etc. (maps to user stories from spec.md)
-   - Setup phase: NO story label
-   - Foundational phase: NO story label  
-   - User Story phases: MUST have story label
-   - Polish phase: NO story label
+4. **[Interface] label**: REQUIRED for interface delivery tasks only
+   - Format: [Interface:I01], [Interface:I02], etc.
+   - Setup phase: NO interface label
+   - Foundational phase: NO interface label
+   - Interface phases: MUST have interface label
+   - Polish phase: NO interface label
 5. **Description**: Clear action with exact file path
 
 **Examples**:
 
 - ✅ CORRECT: `- [ ] T001 Create project structure per implementation plan`
 - ✅ CORRECT: `- [ ] T005 [P] Implement authentication middleware in src/middleware/auth.py`
-- ✅ CORRECT: `- [ ] T012 [P] [US1] Create User model in src/models/user.py`
-- ✅ CORRECT: `- [ ] T014 [US1] Implement UserService in src/services/user_service.py`
+- ✅ CORRECT: `- [ ] T012 [P] [Interface:I01] Deliver interface I01 end-to-end in src/...`
+- ✅ CORRECT: `- [ ] T014 [Interface:I02] Deliver interface I02 end-to-end in src/...`
 - ❌ WRONG: `- [ ] Create User model` (missing ID and Story label)
 - ❌ WRONG: `T001 [US1] Create model` (missing checkbox)
-- ❌ WRONG: `- [ ] [US1] Create User model` (missing Task ID)
-- ❌ WRONG: `- [ ] T001 [US1] Create model` (missing file path)
+- ❌ WRONG: `- [ ] [Interface:I01] Create User model` (missing Task ID)
+- ❌ WRONG: `- [ ] T001 [Interface:I01] Create model` (missing file path)
 
 ### Task Organization
 
