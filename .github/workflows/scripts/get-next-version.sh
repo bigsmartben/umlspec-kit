@@ -5,15 +5,16 @@ set -euo pipefail
 # Read version from pyproject.toml and output GitHub Actions variables
 # Usage: get-next-version.sh
 
+# Get the latest tag for release notes comparison
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+
 # Read version from pyproject.toml
 if [[ -f "pyproject.toml" ]]; then
     VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
     NEW_VERSION="v$VERSION"
 else
     # Fallback to git tag increment if pyproject.toml not found
-    LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-    echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-    
     # Extract version number and increment
     VERSION=$(echo $LATEST_TAG | sed 's/v//')
     IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
